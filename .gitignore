@@ -297,3 +297,7 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Duplicated test files
+TestBigLiteral/DuplicatedLiteralFiles/
+TestBigNameof/DuplicatedNameOfFiles/
