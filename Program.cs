@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Evaluation;
 using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 using SFC = TestBigProject.StringFormattingConstants;
 
 namespace TestBigProject
@@ -13,35 +14,36 @@ namespace TestBigProject
 
         private static void Main(string[] args)
         {
-            // Initialize
-            string formatNameOf = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = nameof({{0}});{SFC.END_LINE}";
-            string projectNameTestingNameOf = "TestBigNameOf";
+            Application.Run(new ProjectsToBuild());
+            //// Initialize
+            //string formatNameOf = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = nameof({{0}});{SFC.END_LINE}";
+            //string projectNameTestingNameOf = "TestBigNameOf";
 
-            string formatLiteral = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = {SFC.DOUBLE_QUOTE}{{0}}{SFC.DOUBLE_QUOTE};{SFC.END_LINE}";
-            string projectNameTestingLiteral = "TestBigLiteral";
+            //string formatLiteral = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = {SFC.DOUBLE_QUOTE}{{0}}{SFC.DOUBLE_QUOTE};{SFC.END_LINE}";
+            //string projectNameTestingLiteral = "TestBigLiteral";
 
-            // Create files
-            FileDuplicator duplicator = new FileDuplicator()
-            {
-                NumberOfDuplicateFiles = NUM_DUPLICATE_FILES,
-                NumberOfLinesPerFile = NUM_LINES_PER_FILE
-            };
-            duplicator.DuplicateFiles(formatNameOf, projectNameTestingNameOf, "DuplicatedNameOfFiles");
-            duplicator.DuplicateFiles(formatLiteral, projectNameTestingLiteral, "DuplicatedLiteralFiles");
+            //// Create files
+            //FileDuplicator duplicator = new FileDuplicator()
+            //{
+            //    NumberOfDuplicateFiles = NUM_DUPLICATE_FILES,
+            //    NumberOfLinesPerFile = NUM_LINES_PER_FILE
+            //};
+            //duplicator.DuplicateFiles(formatNameOf, projectNameTestingNameOf, "DuplicatedNameOfFiles");
+            //duplicator.DuplicateFiles(formatLiteral, projectNameTestingLiteral, "DuplicatedLiteralFiles");
             
-            // Time builds
-            TimeSpan timeForNameOf = TimeBuild(projectNameTestingNameOf, NUM_TIMES_TO_BUILD_PROJECTS);
-            TimeSpan timeForLiteral = TimeBuild(projectNameTestingLiteral, NUM_TIMES_TO_BUILD_PROJECTS);
+            //// Time builds
+            //TimeSpan timeForNameOf = TimeBuild(projectNameTestingNameOf, NUM_TIMES_TO_BUILD_PROJECTS);
+            //TimeSpan timeForLiteral = TimeBuild(projectNameTestingLiteral, NUM_TIMES_TO_BUILD_PROJECTS);
 
-            // Output times
-            Console.WriteLine(
-                $"\nFor each test, " +
-                $"{NUM_DUPLICATE_FILES} duplicated files were built {NUM_TIMES_TO_BUILD_PROJECTS} times, " +
-                $"and each file used {NUM_LINES_PER_FILE} duplicated lines per file.\n" +
-                $"Each project had a total of {NUM_DUPLICATE_FILES * NUM_LINES_PER_FILE} duplicated lines to compile.\n");
-            Console.WriteLine("Note the time format of hh:mm:ss:millsec");
-            Console.WriteLine($"Building {projectNameTestingNameOf} took an average time of {timeForNameOf}.");
-            Console.WriteLine($"Building {projectNameTestingLiteral} took an average time of {timeForLiteral}.");
+            //// Output times
+            //Console.WriteLine(
+            //    $"\nFor each test, " +
+            //    $"{NUM_DUPLICATE_FILES} duplicated files were built {NUM_TIMES_TO_BUILD_PROJECTS} times, " +
+            //    $"and each file used {NUM_LINES_PER_FILE} duplicated lines per file.\n" +
+            //    $"Each project had a total of {NUM_DUPLICATE_FILES * NUM_LINES_PER_FILE} duplicated lines to compile.\n");
+            //Console.WriteLine("Note the time format of hh:mm:ss:millsec");
+            //Console.WriteLine($"Building {projectNameTestingNameOf} took an average time of {timeForNameOf}.");
+            //Console.WriteLine($"Building {projectNameTestingLiteral} took an average time of {timeForLiteral}.");
         }
 
         private static TimeSpan TimeBuild(string projectName, int numberOfTimesToBuild)

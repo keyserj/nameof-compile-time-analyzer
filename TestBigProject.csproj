@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E9548C89-7D61-47F2-B002-C11A36BFD566}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>TestBigProject</RootNamespace>
     <AssemblyName>TestBigProject</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
@@ -31,10 +31,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Build" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,13 +49,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CueTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\DesignProject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DesignProject.Designer.cs">
+      <DependentUpon>DesignProject.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileDuplicator.cs" />
+    <Compile Include="Forms\LiveBuildDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LiveBuildDetails.Designer.cs">
+      <DependentUpon>LiveBuildDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProjectsToBuild.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectsToBuild.Designer.cs">
+      <DependentUpon>ProjectsToBuild.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringFormattingConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\DesignProject.resx">
+      <DependentUpon>DesignProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectsToBuild.resx">
+      <DependentUpon>ProjectsToBuild.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
