@@ -1,5 +1,3 @@
-# nameof Compile Time Analyzer
-
 ## Purpose
 To identify how much of an effect that the use of the keyword "nameof" plays on compile times compared to other ways of outputting strings (currently compared to just string literals)
 
