@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Evaluation;
 using System;
 using System.Diagnostics;
+using System.IO;
 using SFC = TestBigProject.StringFormattingConstants;
 
 namespace TestBigProject
@@ -16,19 +17,17 @@ namespace TestBigProject
             // Initialize
             string formatNameOf = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = nameof({{0}});{SFC.END_LINE}";
             string projectNameTestingNameOf = "TestBigNameOf";
+            DirectoryInfo projectDirectoryTestingNameOf = GetDirectoryInfo(projectNameTestingNameOf);
 
             string formatLiteral = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = {SFC.DOUBLE_QUOTE}{{0}}{SFC.DOUBLE_QUOTE};{SFC.END_LINE}";
             string projectNameTestingLiteral = "TestBigLiteral";
+            DirectoryInfo projectDirectoryTestingLiteral = GetDirectoryInfo(projectNameTestingLiteral);
 
             // Create files
-            FileDuplicator duplicator = new FileDuplicator()
-            {
-                NumberOfDuplicateFiles = NUM_DUPLICATE_FILES,
-                NumberOfLinesPerFile = NUM_LINES_PER_FILE
-            };
-            duplicator.DuplicateFiles(formatNameOf, projectNameTestingNameOf, "DuplicatedNameOfFiles");
-            duplicator.DuplicateFiles(formatLiteral, projectNameTestingLiteral, "DuplicatedLiteralFiles");
-            
+            FileDuplicator duplicator = new FileDuplicator(NUM_DUPLICATE_FILES, NUM_LINES_PER_FILE);
+            duplicator.DuplicateFiles(formatNameOf, projectDirectoryTestingNameOf, "DuplicatedNameOfFiles");
+            duplicator.DuplicateFiles(formatLiteral, projectDirectoryTestingLiteral, "DuplicatedLiteralFiles");
+
             // Time builds
             TimeSpan timeForNameOf = TimeBuild(projectNameTestingNameOf, NUM_TIMES_TO_BUILD_PROJECTS);
             TimeSpan timeForLiteral = TimeBuild(projectNameTestingLiteral, NUM_TIMES_TO_BUILD_PROJECTS);
@@ -46,7 +45,7 @@ namespace TestBigProject
 
         private static TimeSpan TimeBuild(string projectName, int numberOfTimesToBuild)
         {
-            string projectPath = string.Format(SFC.PROJECT_PATH_FORMAT, projectName);
+            string projectPath = SFC.GetProjectPathFormat(projectName);
             Project projectToRecordBuildTime = new Project(projectPath);
 
             Stopwatch stopwatch = new Stopwatch();
@@ -61,6 +60,11 @@ namespace TestBigProject
             // Milliseconds are used instead of ticks because Stopwatch ticks are different than TimeSpan ticks;
             // Stopwatch ticks are hardware dependent, TimeSpan ticks are not.
             return new TimeSpan(0, 0, 0, 0, (int)stopwatch.ElapsedMilliseconds / numberOfTimesToBuild);
+        }
+
+        private static DirectoryInfo GetDirectoryInfo(string projectName)
+        {
+            return new DirectoryInfo($@"{Directory.GetCurrentDirectory()}\..\..\{projectName}");
         }
     }
 }

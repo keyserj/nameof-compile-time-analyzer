@@ -36,42 +36,26 @@ namespace TestBigProject
         private const string COMPILATION_INCLUSION_IDENTIFIER = "<Compile Include=";
 
         private int _numberOfDuplicateFiles = 0;
-        public int NumberOfDuplicateFiles
-        {
-            get
-            {
-                return _numberOfDuplicateFiles;
-            }
-            set
-            {
-                if (value < 0) throw new MemberAccessException("Tried to set NumberOfDuplicateFiles to a value less than zero.");
-                _numberOfDuplicateFiles = value;
-            }
-        }
-
         private int _numberOfLinesPerFile = 0;
-        public int NumberOfLinesPerFile
-        {
-            get
-            {
-                return _numberOfLinesPerFile;
-            }
-            set
-            {
-                if (value < 0) throw new MemberAccessException("Tried to set NumberOfLinesPerFile to a value less than zero.");
-                _numberOfLinesPerFile = value;
-            }
-        }
 
         // ********** CLASS AND INSTANCE VARIABLES ABOVE THIS LINE ********** //
 
-        public FileDuplicator() { }
-
-        public void DuplicateFiles(string format, string projectName, string duplicateDirectoryName)
+        public FileDuplicator(int numberOfDuplicateFiles, int numberOfLinesPerFile)
         {
-            string duplicateFilesToCompile = CreateDuplicateFiles(projectName, duplicateDirectoryName, format);
+            if (numberOfDuplicateFiles < 0) throw new MemberAccessException("Tried to set the number of duplicate files to a value less than zero.");
+            if (numberOfLinesPerFile < 0) throw new MemberAccessException("Tried to set number of lines per file to a value less than zero.");
+
+            _numberOfDuplicateFiles = numberOfDuplicateFiles;
+            _numberOfLinesPerFile = numberOfLinesPerFile;
+        }
+
+        public void DuplicateFiles(string format, DirectoryInfo projectDirectory, string duplicateDirectoryName)
+        {
+            string duplicateFilesToCompile = CreateDuplicateFiles(projectDirectory.FullName, duplicateDirectoryName, format);
             string allFilesToCompile = $"{PROGRAM_CS_INCLUSION}{SFC.END_LINE}{duplicateFilesToCompile}{ASSEMBLYINFO_CS_INCLUSION}";
-            AddInclusionsToProject(projectName, allFilesToCompile);
+
+            string projectPath = $@"{projectDirectory.FullName}\{projectDirectory.Name}.csproj"; // assume the directory name is the project name
+            AddInclusionsToProject(projectPath, allFilesToCompile);
         }
 
         /// <summary>
@@ -81,11 +65,11 @@ namespace TestBigProject
         /// <param name="directoryName">Name to give the directory that will hold all of the created duplicate files.</param>
         /// <param name="formatToCreateLineWithClassNameString">Format used to create each line of the file body, with one parameter being the class name to reference in the test</param>
         /// <returns>String for the .csproj that specifies the files to compile</returns>
-        private string CreateDuplicateFiles(string projectName, string directoryName, string formatToCreateLineWithClassNameString)
+        private string CreateDuplicateFiles(string projectDirectoryPath, string directoryName, string formatToCreateLineWithClassNameString)
         {
             StringBuilder filesToCompileStringBuilder = new StringBuilder();
 
-            string duplicateDirectoryPath = string.Format(StringFormattingConstants.DUPLICATE_DIRECTORY_PATH_FORMAT, projectName, directoryName);
+            string duplicateDirectoryPath = $@"{projectDirectoryPath}\{directoryName}\";
             Directory.CreateDirectory(duplicateDirectoryPath);
 
             for (int i = 0; i < _numberOfDuplicateFiles; i++)
@@ -111,10 +95,8 @@ namespace TestBigProject
         /// </summary>
         /// <param name="projectPath">Path to the .csproj file to add file inclusions to.</param>
         /// <param name="filesToCompile">String of the file inclusions to add to the .csproj file.</param>
-        private void AddInclusionsToProject(string projectName, string filesToCompile)
+        private void AddInclusionsToProject(string projectPath, string filesToCompile)
         {
-            string projectPath = string.Format(StringFormattingConstants.PROJECT_PATH_FORMAT, projectName);
-
             string[] fileText = File.ReadAllLines(projectPath);
             int lineNumberBeforeFirstCompilationInclusion = GetLineNumberBeforeFirstCompilationInclusion(fileText);
             int lineNumberAfterLastCompilationInclusion = GetLineNumberAfterLastCompilationInclusion(fileText);

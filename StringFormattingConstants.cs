@@ -4,11 +4,7 @@ namespace TestBigProject
 {
     public class StringFormattingConstants
     {
-        /// <summary>
-        /// Format to use for creating the project path 
-        /// Parameter: (project name)
-        /// </summary>
-        public static readonly string PROJECT_PATH_FORMAT = $@"{Directory.GetCurrentDirectory()}\..\..\{{0}}\{{0}}.csproj";
+        public static string GetProjectPathFormat(string projectName) => $@"{Directory.GetCurrentDirectory()}\..\..\{projectName}\{projectName}.csproj";
 
         /// <summary>
         /// Format to use for creating the duplicate directory path 
