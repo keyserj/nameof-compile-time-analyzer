@@ -16,21 +16,21 @@ namespace TestBigProject
         {
             // Initialize
             string formatNameOf = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = nameof({{0}});{SFC.END_LINE}";
-            string projectNameTestingNameOf = "TestBigNameOf";
-            DirectoryInfo projectDirectoryTestingNameOf = GetDirectoryInfo(projectNameTestingNameOf);
+            string projectNameBigNameOf = "BigNameOf";
+            DirectoryInfo projectDirectoryBigNameOf = GetDirectoryInfo(projectNameBigNameOf);
 
             string formatLiteral = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = {SFC.DOUBLE_QUOTE}{{0}}{SFC.DOUBLE_QUOTE};{SFC.END_LINE}";
-            string projectNameTestingLiteral = "TestBigLiteral";
-            DirectoryInfo projectDirectoryTestingLiteral = GetDirectoryInfo(projectNameTestingLiteral);
+            string projectNameBigLiteral = "BigLiteral";
+            DirectoryInfo projectDirectoryBigLiteral = GetDirectoryInfo(projectNameBigLiteral);
 
             // Create files
             FileDuplicator duplicator = new FileDuplicator(NUM_DUPLICATE_FILES, NUM_LINES_PER_FILE);
-            duplicator.DuplicateFiles(formatNameOf, projectDirectoryTestingNameOf, "DuplicatedNameOfFiles");
-            duplicator.DuplicateFiles(formatLiteral, projectDirectoryTestingLiteral, "DuplicatedLiteralFiles");
+            duplicator.DuplicateFiles(formatNameOf, projectDirectoryBigNameOf, "DuplicatedNameOfFiles");
+            duplicator.DuplicateFiles(formatLiteral, projectDirectoryBigLiteral, "DuplicatedLiteralFiles");
 
             // Time builds
-            TimeSpan timeForNameOf = TimeBuild(projectNameTestingNameOf, NUM_TIMES_TO_BUILD_PROJECTS);
-            TimeSpan timeForLiteral = TimeBuild(projectNameTestingLiteral, NUM_TIMES_TO_BUILD_PROJECTS);
+            TimeSpan timeForNameOf = TimeBuild(projectNameBigNameOf, NUM_TIMES_TO_BUILD_PROJECTS);
+            TimeSpan timeForLiteral = TimeBuild(projectNameBigLiteral, NUM_TIMES_TO_BUILD_PROJECTS);
 
             // Output times
             Console.WriteLine(
@@ -39,8 +39,8 @@ namespace TestBigProject
                 $"and each file used {NUM_LINES_PER_FILE} duplicated lines per file.\n" +
                 $"Each project had a total of {NUM_DUPLICATE_FILES * NUM_LINES_PER_FILE} duplicated lines to compile.\n");
             Console.WriteLine("Note the time format of hh:mm:ss:millsec");
-            Console.WriteLine($"Building {projectNameTestingNameOf} took an average time of {timeForNameOf}.");
-            Console.WriteLine($"Building {projectNameTestingLiteral} took an average time of {timeForLiteral}.");
+            Console.WriteLine($"Building {projectNameBigNameOf} took an average time of {timeForNameOf}.");
+            Console.WriteLine($"Building {projectNameBigLiteral} took an average time of {timeForLiteral}.");
         }
 
         private static TimeSpan TimeBuild(string projectName, int numberOfTimesToBuild)
