@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using System;
 using System.IO;
 using System.Text;
 using SFC = TestBigProject.StringFormattingConstants;
@@ -49,7 +51,7 @@ namespace TestBigProject
             _numberOfLinesPerFile = numberOfLinesPerFile;
         }
 
-        public void DuplicateFiles(string format, DirectoryInfo projectDirectory, string duplicateDirectoryName)
+        public void DuplicateFiles(string format, DirectoryInfo projectDirectory, string duplicateDirectoryName = "DuplicatedFiles")
         {
             string duplicateFilesToCompile = CreateDuplicateFiles(projectDirectory.FullName, duplicateDirectoryName, format);
             string allFilesToCompile = $"{PROGRAM_CS_INCLUSION}{SFC.END_LINE}{duplicateFilesToCompile}{ASSEMBLYINFO_CS_INCLUSION}";
@@ -59,11 +61,16 @@ namespace TestBigProject
         }
 
         /// <summary>
-        /// Creates many duplicate files, whose name and containing class name is "Program{i}",
-        /// where i is the iteration number for creating the files, starting from zero.
+        /// Creates many duplicate files, whose name and containing class name is "Program{i}", where
+        /// i is the iteration number for creating the files, starting from zero.
         /// </summary>
-        /// <param name="directoryName">Name to give the directory that will hold all of the created duplicate files.</param>
-        /// <param name="formatToCreateLineWithClassNameString">Format used to create each line of the file body, with one parameter being the class name to reference in the test</param>
+        /// <param name="directoryName">
+        /// Name to give the directory that will hold all of the created duplicate files.
+        /// </param>
+        /// <param name="formatToCreateLineWithClassNameString">
+        /// Format used to create each line of the file body, with one parameter being the class name
+        /// to reference in the test
+        /// </param>
         /// <returns>String for the .csproj that specifies the files to compile</returns>
         private string CreateDuplicateFiles(string projectDirectoryPath, string directoryName, string formatToCreateLineWithClassNameString)
         {
@@ -80,7 +87,9 @@ namespace TestBigProject
                 {
                     string fileBody = GetFileBody(formatToCreateLineWithClassNameString);
                     string fileText = string.Format(FORMAT_FOR_TEST_FILE, directoryName, i, fileBody);
-                    Byte[] info = new UTF8Encoding(true).GetBytes(fileText);
+                    // Autoformat file, e.g. ctrl+k+d; thanks StackOverflow: https://stackoverflow.com/a/47152739
+                    string formattedFileText = CSharpSyntaxTree.ParseText(fileText).GetRoot().NormalizeWhitespace().ToFullString();
+                    Byte[] info = new UTF8Encoding(true).GetBytes(formattedFileText);
                     duplicateFileStream.Write(info, 0, info.Length);
                 }
             }
@@ -89,9 +98,9 @@ namespace TestBigProject
         }
 
         /// <summary>
-        /// Adds the files from the input filesToCompile to the .csproj file that is found with
-        /// the specified name and is located in "bin/Debug/../../projectName/".
-        /// The files are added and replace all inclusions aside from Program.cs and Properties\AssemblyInfo.cs.
+        /// Adds the files from the input filesToCompile to the .csproj file that is found with the
+        /// specified name and is located in "bin/Debug/../../projectName/". The files are added and
+        /// replace all inclusions aside from Program.cs and Properties\AssemblyInfo.cs.
         /// </summary>
         /// <param name="projectPath">Path to the .csproj file to add file inclusions to.</param>
         /// <param name="filesToCompile">String of the file inclusions to add to the .csproj file.</param>
@@ -117,8 +126,9 @@ namespace TestBigProject
         }
 
         /// <summary>
-        /// For the input fileText, finds the line number immediately after the line of the last compilation inclusion.
-        /// If no compilation inclusion is found, an array out of bounds exception will be thrown.
+        /// For the input fileText, finds the line number immediately after the line of the last
+        /// compilation inclusion. If no compilation inclusion is found, an array out of bounds
+        /// exception will be thrown.
         /// </summary>
         /// <param name="fileText">Text to search through for the last compilation inclusion</param>
         /// <returns>Line number immediately after the line of the last compilation inclusion</returns>
@@ -136,8 +146,9 @@ namespace TestBigProject
         }
 
         /// <summary>
-        /// For the input fileText, finds the line number immediately before the line of the first compilation inclusion.
-        /// If no compilation inclusion is found, an array out of bounds exception will be thrown.
+        /// For the input fileText, finds the line number immediately before the line of the first
+        /// compilation inclusion. If no compilation inclusion is found, an array out of bounds
+        /// exception will be thrown.
         /// </summary>
         /// <param name="fileText">Text to search through for the first compilation inclusion</param>
         /// <returns>Line number immediately before the line of the first compilation inclusion</returns>
@@ -155,11 +166,13 @@ namespace TestBigProject
         }
 
         /// <summary>
-        /// Creates the body for the test file.
-        /// Each line in the body sets the value of a string variable to the name of a class called "Program{x}",
-        /// where x is a random number between 0 and NUM_DUPLICATE_FILES.
+        /// Creates the body for the test file. Each line in the body sets the value of a string
+        /// variable to the name of a class called "Program{x}", where x is a random number between 0
+        /// and NUM_DUPLICATE_FILES.
         /// </summary>
-        /// <param name="formatToCreateLineWithClassNameString">Format whose parameter is the class name to reference in the test.</param>
+        /// <param name="formatToCreateLineWithClassNameString">
+        /// Format whose parameter is the class name to reference in the test.
+        /// </param>
         /// <returns></returns>
         private string GetFileBody(string formatToCreateLineWithClassNameString)
         {

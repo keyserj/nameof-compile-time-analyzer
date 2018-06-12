@@ -1,4 +1,4 @@
-namespace Duplicates
+namespace DuplicateFiles
 {
     class Program0
     {

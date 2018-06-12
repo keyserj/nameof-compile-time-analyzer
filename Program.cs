@@ -15,18 +15,18 @@ namespace TestBigProject
         private static void Main(string[] args)
         {
             // Initialize
-            string formatNameOf = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = nameof({{0}});{SFC.END_LINE}";
+            string formatNameOf = "s = nameof({0});\r\n";   // e.g. s = nameof(Program0);
             string projectNameBigNameOf = "BigNameOf";
             DirectoryInfo projectDirectoryBigNameOf = GetDirectoryInfo(projectNameBigNameOf);
 
-            string formatLiteral = $"{SFC.TABS_FOR_FILE_BODY_LINES}s = {SFC.DOUBLE_QUOTE}{{0}}{SFC.DOUBLE_QUOTE};{SFC.END_LINE}";
+            string formatLiteral = "s = \"{0}\";\r\n";
             string projectNameBigLiteral = "BigLiteral";
             DirectoryInfo projectDirectoryBigLiteral = GetDirectoryInfo(projectNameBigLiteral);
 
             // Create files
             FileDuplicator duplicator = new FileDuplicator(NUM_DUPLICATE_FILES, NUM_LINES_PER_FILE);
-            duplicator.DuplicateFiles(formatNameOf, projectDirectoryBigNameOf, "DuplicatedNameOfFiles");
-            duplicator.DuplicateFiles(formatLiteral, projectDirectoryBigLiteral, "DuplicatedLiteralFiles");
+            duplicator.DuplicateFiles(formatNameOf, projectDirectoryBigNameOf);
+            duplicator.DuplicateFiles(formatLiteral, projectDirectoryBigLiteral);
 
             // Time builds
             TimeSpan timeForNameOf = TimeBuild(projectNameBigNameOf, NUM_TIMES_TO_BUILD_PROJECTS);

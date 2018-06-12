@@ -299,5 +299,4 @@ __pycache__/
 *.xsd.cs
 
 # Duplicated test files
-TestBigLiteral/DuplicatedLiteralFiles/
-TestBigNameof/DuplicatedNameOfFiles/
+DuplicatedFiles/

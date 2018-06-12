@@ -12,8 +12,6 @@ namespace TestBigProject
         /// </summary>
         public static readonly string DUPLICATE_DIRECTORY_PATH_FORMAT = $@"{Directory.GetCurrentDirectory()}\..\..\{{0}}\{{1}}\";
         
-        public const string TABS_FOR_FILE_BODY_LINES = "            ";
-        public const string TABS_FOR_CSPROJ_LINES = "    ";
         public const string DOUBLE_QUOTE = "\"";
         public const string END_LINE = "\r\n";
     }
