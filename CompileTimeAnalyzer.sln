@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigProject", "BigProject.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestNameOf", "UnitTestNameOf\UnitTestNameOf.csproj", "{5FED3F61-77DB-4E6D-A0A2-E1DBBC96A7BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigNameOf", "TestBigNameOf\BigNameOf.csproj", "{F4F2AD1F-FD04-4A57-B254-68AE31A239A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigNameOf", "BigNameOf\BigNameOf.csproj", "{F4F2AD1F-FD04-4A57-B254-68AE31A239A2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{7840E62F-38E0-4AA6-B1EC-598619A51C72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigLiteral", "TestBigLiteral\BigLiteral.csproj", "{0336AE13-3074-4455-B470-910D143556B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigLiteral", "BigLiteral\BigLiteral.csproj", "{0336AE13-3074-4455-B470-910D143556B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
