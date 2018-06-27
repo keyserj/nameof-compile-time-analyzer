@@ -1,5 +1,7 @@
+using Microsoft.Build.Evaluation;
 using System.IO;
 using TestBigProject;
+using UnitTests.Helpers;
 using Xunit;
 
 namespace UnitTests
@@ -16,7 +18,7 @@ namespace UnitTests
             DirectoryInfo projectDirectory = new DirectoryInfo($@"{Directory.GetCurrentDirectory()}\..\..\..\..\{projectName}");
 
             // Act
-            duplicator.DuplicateFiles(formatNameOf, projectDirectory); //TODO: probably can name the file for duplicates without an argument
+            duplicator.DuplicateFiles(formatNameOf, projectDirectory);
 
             // Assert
             string duplicateFilePath = $@"{projectDirectory}\DuplicatedFiles\Program0.cs";
@@ -34,6 +36,25 @@ namespace UnitTests
     }
 }";
             Assert.Equal(expectedFileText, fileText);
+        }
+
+        [Fact]
+        public void FileDuplicator_Correctly_Compiles_Duplicated_Files()
+        {
+            // Arrange
+            FileDuplicator duplicator = new FileDuplicator(numberOfDuplicateFiles: 10, numberOfLinesPerFile: 1);
+            string formatNameOf = "s = nameof({0});\r\n";
+            string projectName = "UnitTestNameOf";
+            DirectoryInfo projectDirectory = new DirectoryInfo($@"{Directory.GetCurrentDirectory()}\..\..\..\..\{projectName}");
+
+            // Act
+            duplicator.DuplicateFiles(formatNameOf, projectDirectory);
+            Project project = new Project($@"{projectDirectory.FullName}\{projectDirectory.Name}.csproj");
+            InMemoryLogger logger = new InMemoryLogger();
+            project.Build(logger);
+
+            // Assert
+            Assert.True(true);
         }
     }
 }

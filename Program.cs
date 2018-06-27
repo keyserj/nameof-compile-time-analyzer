@@ -19,7 +19,7 @@ namespace TestBigProject
             string projectNameBigNameOf = "BigNameOf";
             DirectoryInfo projectDirectoryBigNameOf = GetDirectoryInfo(projectNameBigNameOf);
 
-            string formatLiteral = "s = \"{0}\";\r\n";
+            string formatLiteral = "s = \"{0}\";\r\n";  // e.g. s = "Program0";
             string projectNameBigLiteral = "BigLiteral";
             DirectoryInfo projectDirectoryBigLiteral = GetDirectoryInfo(projectNameBigLiteral);
 
